@@ -9,7 +9,7 @@ def construct_oracle():
     # - Qubit 0 and Qubit 1 to be different (representing two different cells with different values)
     # - Qubit 2 and Qubit 3 to be different (another pair of cells with different values)
 
-    # Enforcing qubit pairs to be different values using XOR (controlled-Z gates as an example)
+    # Enforcing qubit pairs to be different values using controlled-Z gates
     oracle.cz(0, 1)
     oracle.cz(2, 3)
     
