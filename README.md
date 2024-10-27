@@ -1,3 +1,7 @@
+
+---
+
+```markdown
 # Quantum Sudoku Solver
 
 ## Overview
@@ -15,6 +19,7 @@ The **Quantum Sudoku Solver** is an innovative implementation of a Sudoku puzzle
 - [Usage](#usage)
 - [Theory](#theory)
 - [Project Structure](#project-structure)
+- [Code Explanation](#code-explanation)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -107,6 +112,77 @@ Quantum-Sudoku-Solver/
 - **grover_utils.py**: Includes functions for constructing the oracle and the diffusion operator.
 - **requirements.txt**: Lists all required packages for running the project.
 
+## Code Explanation
+
+### 1. `grover_utils.py`
+
+This file contains utility functions for Grover's algorithm.
+
+- **construct_oracle()**: Constructs a quantum oracle using controlled-Z gates to enforce the rule that certain qubits representing Sudoku cells must be different. This function is crucial for maintaining the integrity of the Sudoku solution.
+
+    ```python
+    from qiskit import QuantumCircuit
+
+    def construct_oracle():
+        oracle = QuantumCircuit(4)
+        oracle.cz(0, 1)  # Ensure qubit 0 and 1 are different
+        oracle.cz(2, 3)  # Ensure qubit 2 and 3 are different
+        return oracle
+    ```
+
+- **diffusion_operator()**: Creates the diffusion operator used in Grover's algorithm, which amplifies the probability of measuring valid solutions.
+
+    ```python
+    def diffusion_operator(num_qubits):
+        diffusion = QuantumCircuit(num_qubits)
+        diffusion.h(range(num_qubits))
+        diffusion.x(range(num_qubits))
+        diffusion.h(num_qubits - 1)
+        diffusion.mcx(list(range(num_qubits - 1)), num_qubits - 1)
+        diffusion.h(num_qubits - 1)
+        diffusion.x(range(num_qubits))
+        diffusion.h(range(num_qubits))
+        return diffusion
+    ```
+
+### 2. `sudoku_solver.py`
+
+This is the main script that implements the Sudoku solver.
+
+- **initialize_sudoku_state(puzzle)**: Initializes the quantum circuit with the known values of the Sudoku puzzle. It represents filled cells using X gates.
+
+    ```python
+    def initialize_sudoku_state(puzzle):
+        qr = QuantumRegister(4)
+        circuit = QuantumCircuit(qr)
+        for i, value in enumerate(puzzle):
+            if value == 1:
+                circuit.x(qr[i])  # Apply X gate to represent '1'
+        return circuit
+    ```
+
+- **solve_sudoku(puzzle)**: The main function that applies Grover's algorithm to solve the 2x2 Sudoku puzzle, executes the quantum circuit, and visualizes the results.
+
+    ```python
+    def solve_sudoku(puzzle):
+        qr = QuantumRegister(4)
+        cr = ClassicalRegister(4)
+        circuit = QuantumCircuit(qr, cr)
+        init_circuit = initialize_sudoku_state(puzzle)
+        circuit.compose(init_circuit, inplace=True)
+
+        # Apply Hadamard gates and Grover's operator
+        circuit.h(qr)
+        oracle = construct_oracle()
+        circuit.compose(oracle, inplace=True)
+        diffusion = diffusion_operator(len(qr))
+        circuit.compose(diffusion, inplace=True)
+
+        # Measurement
+        circuit.measure(qr, cr)
+        ...
+    ```
+
 ## Contributing
 
 Contributions to the Quantum Sudoku Solver are welcome! If you'd like to contribute, please follow these steps:
@@ -138,3 +214,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ---
 
 Thank you for your interest in the Quantum Sudoku Solver! We hope you find it useful for exploring quantum computing and constraint satisfaction problems.
+```
+
+---
