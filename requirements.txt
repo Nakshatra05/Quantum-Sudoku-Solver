@@ -1,0 +1,2 @@
+qiskit==0.39.2
+matplotlib==3.7.1
