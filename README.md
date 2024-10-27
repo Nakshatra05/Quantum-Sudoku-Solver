@@ -210,6 +210,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ---
 
 Thank you for your interest in the Quantum Sudoku Solver! We hope you find it useful for exploring quantum computing and constraint satisfaction problems.
-```
+
 
 ---
