@@ -1,7 +1,3 @@
-
----
-
-```markdown
 # Quantum Sudoku Solver
 
 ## Overview
