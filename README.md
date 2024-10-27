@@ -33,7 +33,7 @@ To get started with the Quantum Sudoku Solver, follow these steps:
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/your-username/Quantum-Sudoku-Solver.git
+   git clone https://github.com/Nakshatra05/Quantum-Sudoku-Solver.git
    ```
 
 2. **Navigate to the Project Directory**:
